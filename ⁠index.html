@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr. Sosial Media Finance</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-2xl p-6 shadow-xl">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-blue-600 rounded-xl mx-auto flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg shadow-blue-500/30">M</div>
+        <h1 class="text-white font-bold text-xl">Mr. Sosial Media Finance</h1>
+        <p class="text-slate-400 text-xs mt-1">Silakan masuk untuk mengelola keuangan</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Email</label>
+          <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500" placeholder="Masukkan email">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+          <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-blue-500" placeholder="Masukkan password">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/30 text-sm">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APP SCREEN -->
+  <div id="app-screen" class="hidden min-h-screen pb-20">
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30 px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">M</div>
+        <span class="font-bold text-sm tracking-wide">Mr. Sosial Media Finance</span>
+      </div>
+      <button id="logout-btn" class="text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20 font-medium">Keluar</button>
+    </header>
+
+    <div class="overflow-x-auto bg-slate-900 border-b border-slate-800 px-4 py-2 flex space-x-2 scrollbar-none sticky top-[53px] z-20" id="month-tabs"></div>
+
+    <main class="p-4 max-w-4xl mx-auto space-y-4">
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl">
+          <p class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Pemasukan</p>
+          <p id="total-income" class="text-emerald-400 font-bold text-sm sm:text-base mt-1">Rp 0</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl">
+          <p class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Pengeluaran</p>
+          <p id="total-expense" class="text-rose-400 font-bold text-sm sm:text-base mt-1">Rp 0</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl">
+          <p class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Saldo</p>
+          <p id="total-balance" class="text-blue-400 font-bold text-sm sm:text-base mt-1">Rp 0</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+        <h2 class="text-xs font-semibold uppercase text-slate-400 mb-3 tracking-wider">Tambah Transaksi</h2>
+        <form id="transaction-form" class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Tanggal</label>
+              <input type="date" id="tx-date" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Jenis</label>
+              <select id="tx-type" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-blue-500">
+                <option value="income">Pemasukan</option>
+                <option value="expense">Pengeluaran</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Kategori</label>
+              <input type="text" id="tx-category" placeholder="Contoh: Renapro" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Jumlah (Rp)</label>
+              <input type="number" id="tx-amount" placeholder="0" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-blue-500">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-medium text-slate-400 mb-1">Keterangan</label>
+            <input type="text" id="tx-desc" placeholder="Catatan opsional..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-blue-500">
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl transition-all text-xs shadow-lg shadow-blue-600/20">Simpan Transaksi</button>
+        </form>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 overflow-hidden">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Riwayat Transaksi</h2>
+          <button id="export-csv" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">Export CSV</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px]">
+              <tr>
+                <th class="p-2.5 rounded-l-lg">Tanggal</th>
+                <th class="p-2.5">Kategori</th>
+                <th class="p-2.5">Keterangan</th>
+                <th class="p-2.5">Jumlah</th>
+                <th class="p-2.5">Saldo</th>
+                <th class="p-2.5 rounded-r-lg text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="transaction-table-body" class="divide-y divide-slate-800">
+              <tr>
+                <td colspan="6" class="text-center py-4 text-slate-500">Belum ada transaksi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SCRIPT JAVASCRIPT -->
+  <script>
+    let currentUser = localStorage.getItem('msm_user') || null;
+    let currentMonth = new Date().toISOString().slice(0, 7);
+    let transactions = JSON.parse(localStorage.getItem('msm_transactions')) || [];
+
+    const monthsList = [
+      { id: '2026-01', name: 'Jan 2026' },
+      { id: '2026-02', name: 'Feb 2026' },
+      { id: '2026-03', name: 'Mar 2026' },
+      { id: '2026-04', name: 'Apr 2026' },
+      { id: '2026-05', name: 'Mei 2026' },
+      { id: '2026-06', name: 'Jun 2026' },
+      { id: '2026-07', name: 'Jul 2026' },
+      { id: '2026-08', name: 'Agu 2026' },
+      { id: '2026-09', name: 'Sep 2026' },
+      { id: '2026-10', name: 'Okt 2026' },
+      { id: '2026-11', name: 'Nov 2026' },
+      { id: '2026-12', name: 'Des 2026' }
+    ];
+
+    const loginScreen = document.getElementById('login-screen');
+    const appScreen = document.getElementById('app-screen');
+    const loginForm = document.getElementById('login-form');
+    const logoutBtn = document.getElementById('logout-btn');
+    const monthTabsContainer = document.getElementById('month-tabs');
+    const transactionForm = document.getElementById('transaction-form');
+    const transactionTableBody = document.getElementById('transaction-table-body');
+    const totalIncomeEl = document.getElementById('total-income');
+    const totalExpenseEl = document.getElementById('total-expense');
+    const totalBalanceEl = document.getElementById('total-balance');
+    const exportCsvBtn = document.getElementById('export-csv');
+
+    function init() {
+      if (currentUser) {
+        loginScreen.classList.add('hidden');
+        appScreen.classList.remove('hidden');
+        renderMonthTabs();
+        renderApp();
+      } else {
+        loginScreen.classList.remove('hidden');
+        appScreen.classList.add('hidden');
+      }
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+
+      if (email === 'mrsosialmediacs@gmail.com' && pass === 'Rajak_1999') {
+        currentUser = email;
+        localStorage.setItem('msm_user', email);
+        init();
+      } else {
+        alert('Email atau Password salah!');
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('msm_user');
+      currentUser = null;
+      init();
+    });
+
+    function renderMonthTabs() {
+      monthTabsContainer.innerHTML = '';
+      monthsList.forEach(m => {
+        const btn = document.createElement('button');
+        const isActive = m.id === currentMonth;
+        btn.className = `px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+          isActive ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+        }`;
+        btn.textContent = m.name;
+        btn.addEventListener('click', () => {
+          currentMonth = m.id;
+          renderMonthTabs();
+          renderApp();
+        });
+        monthTabsContainer.appendChild(btn);
+      });
+    }
+
+    function formatRupiah(number) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+    }
+
+    transactionForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const date = document.getElementById('tx-date').value;
+      const type = document.getElementById('tx-type').value;
+      const category = document.getElementById('tx-category').value;
+      const amount = parseFloat(document.getElementById('tx-amount').value);
+      const desc = document.getElementById('tx-desc').value;
+
+      const newTx = {
+        id: Date.now().toString(),
+        date,
+        type,
+        category,
+        amount,
+        desc,
+        month: date.slice(0, 7)
+      };
+
+      transactions.push(newTx);
+      localStorage.setItem('msm_transactions', JSON.stringify(transactions));
+      
+      transactionForm.reset();
+      document.getElementById('tx-date').value = new Date().toISOString().slice(0, 10);
+      renderApp();
+    });
+
+    window.deleteTransaction = function(id) {
+      transactions = transactions.filter(t => t.id !== id);
+      localStorage.setItem('msm_transactions', JSON.stringify(transactions));
+      renderApp();
+    }
+
+    function renderApp() {
+      const dateInput = document.getElementById('tx-date');
+      if (!dateInput.value) {
+        dateInput.value = new Date().toISOString().slice(0, 10);
+      }
+
+      const filtered = transactions.filter(t => t.month === currentMonth).sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      let income = 0;
+      let expense = 0;
+      let runningBalance = 0;
+
+      transactionTableBody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        transactionTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-500">Belum ada transaksi di bulan ini</td></tr>`;
+      } else {
+        filtered.forEach(t => {
+          if (t.type === 'income') {
+            income += t.amount;
+            runningBalance += t.amount;
+          } else {
+            expense += t.amount;
+            runningBalance -= t.amount;
+          }
+
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-slate-800/60 hover:bg-slate-900/50';
+          tr.innerHTML = `
+            <td class="p-2.5 text-slate-300">${t.date}</td>
+            <td class="p-2.5 font-medium text-white">${t.category}</td>
+            <td class="p-2.5 text-slate-400 truncate max-w-[120px]">${t.desc || '-'}</td>
+            <td class="p-2.5 font-semibold ${t.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">
+              ${t.type === 'income' ? '+' : '-'}${formatRupiah(t.amount)}
+            </td>
+            <td class="p-2.5 font-medium text-slate-200">${formatRupiah(runningBalance)}</td>
+            <td class="p-2.5 text-center">
+              <button onclick="deleteTransaction('${t.id}')" class="text-rose-400 hover:text-rose-300 p-1">Hapus</button>
+            </td>
+          `;
+          transactionTableBody.appendChild(tr);
+        });
+      }
+
+      totalIncomeEl.textContent = formatRupiah(income);
+      totalExpenseEl.textContent = formatRupiah(expense);
+      totalBalanceEl.textContent = formatRupiah(runningBalance);
+    }
+
+    exportCsvBtn.addEventListener('click', () => {
+      const filtered = transactions.filter(t => t.month === currentMonth);
+      if (filtered.length === 0) {
+        alert('Tidak ada data untuk diexport!');
+        return;
+      }
+
+      let csvContent = "data:text/csv;charset=utf-8,Tanggal,Jenis,Kategori,Keterangan,Jumlah\n";
+      filtered.forEach(t => {
+        csvContent += `"${t.date}","${t.type}","${t.category}","${t.desc || ''}",${t.amount}\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `rekap_keuangan_${currentMonth}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    init();
+  </script>
+</body>
+</html>
